@@ -11,14 +11,16 @@ block content
   script.
     var $chat = $('#chat');
     $('#fire').on('click',null, function() {
-      client.publish('/room1', {text: "#{user}: " + $chat.val()});$chat.val('');
+      var now = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+       client.publish('/room1', {text: "#{user}: " + $chat.val(), timestamp: now});$chat.val('');
       $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
 
     $chat.keyup(function(e){
       var code = (e.keyCode ? e.keyCode : e.which);
       if(code == 13) { 
-        client.publish('/room1', {text: "#{user}: " + $chat.val()});$chat.val('');
+        var now = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+        client.publish('/room1', {text: "#{user}: " + $chat.val(), timestamp: now});$chat.val('');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
       }
     });
@@ -26,7 +28,7 @@ block content
     var client = new Faye.Client('/chat');			
 
     var subscription = client.subscribe('/room1', function(message) {
-      $("textarea#messages").val($("textarea#messages").val() + message.text + "\n");
+      $("textarea#messages").val($("textarea#messages").val() + "[" + message.timestamp + "] " + message.text + "\n");
       $("textarea#messages").scrollTop($('#messages')[0].scrollHeight);
     });
 
