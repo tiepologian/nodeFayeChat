@@ -1,0 +1,23 @@
+{
+  "name": "nodeFayeChat",
+  "version": "1.0.0",
+  "description": "An example of a chat programmed using Node.js and Faye",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tiepologian/nodeFayeChat.git"
+  },
+  "author": "Gianluca Tiepolo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tiepologian/nodeFayeChat/issues"
+  },
+  "homepage": "https://github.com/tiepologian/nodeFayeChat",
+  "dependencies": {
+   "express": "*",
+   "jade": "*",
+   "redis": "*",
+   "faye": "*",
+   "redis": "*"
+   }
+}

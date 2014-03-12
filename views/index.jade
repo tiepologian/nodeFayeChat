@@ -1,0 +1,22 @@
+extend layout
+
+block content
+  p
+    | This is an example of a chat made with Node.js.
+    | You can find the code on GitHub.
+    
+  p
+    | Ready to start chatting?
+    br
+    | Yes? Well, choose a username!
+
+  form(action="nodechat", method="post")
+    div
+      label(for="username").name USERNAME:
+      input(type="text", name="username", id="username").username
+    div.centrato
+      p.submit
+        input(type="submit", value="Start chatting")
+
+  if error
+    h2 #{error}

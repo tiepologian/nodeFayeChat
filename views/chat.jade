@@ -1,0 +1,48 @@
+extend layout
+
+block header
+  script(type="text/javascript", src="/chat/client.js")
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js")
+
+block content
+  textarea(rows=20, cols=39, readonly)#messages.messages
+  input(type="text", name="username")#chat.newmessage
+  input(type="submit", value="Send")#fire.send
+  script.
+    var $chat = $('#chat');
+    $('#fire').on('click',null, function() {
+      client.publish('/room1', {text: "#{user}: " + $chat.val()});$chat.val('');
+      $('#messages').scrollTop($('#messages')[0].scrollHeight);
+    });
+
+    $chat.keyup(function(e){
+      var code = (e.keyCode ? e.keyCode : e.which);
+      if(code == 13) { 
+        client.publish('/room1', {text: "#{user}: " + $chat.val()});$chat.val('');
+        $('#messages').scrollTop($('#messages')[0].scrollHeight);
+      }
+    });
+
+    var client = new Faye.Client('/chat');			
+
+    var subscription = client.subscribe('/room1', function(message) {
+      $("textarea#messages").val($("textarea#messages").val() + message.text + "\n");
+      $("textarea#messages").scrollTop($('#messages')[0].scrollHeight);
+    });
+
+    setInterval(function() {
+      $.get("/users/#{user}");
+      $.get("/users", function(data) {
+        $("#onlineusers").text("");
+        for (var i in data) {
+          $("#onlineusers").append("<p>" + data[i] + "</p>");
+        }
+      }, "json");
+    }, 3000);
+
+block sidebar
+  .widget
+    h1 Online Users:
+    div#onlineusers
+
+
